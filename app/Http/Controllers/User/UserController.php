@@ -22,13 +22,16 @@ class UserController extends Controller {
      * @return JsonResponse
      */
     public function store(CreateUserRequest $request): JsonResponse {
-        $user = $this->createUserUseCase->handle($request->validated());
+        $data = $request->validated();
+        $data['password'] = bcrypt($data['password']);
+
+        $user = $this->createUserUseCase->handle($data);
 
         return response()->json([
             'success' => true,
             'message' => 'Usuário criado com sucesso!',
             'data' => $user
-        ]);
+        ], 201);
     }
 
     /**
