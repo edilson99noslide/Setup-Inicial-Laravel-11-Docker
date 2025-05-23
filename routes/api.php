@@ -15,8 +15,10 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::prefix('users')->middleware('auth:api')->group(function () {
+    Route::get('/{userId}', [UserController::class, 'show']);
     Route::post('/', [UserController::class, 'store']);
     Route::put('/{userId}', [UserController::class, 'update']);
+    Route::delete('/{userId}', [UserController::class, 'destroy']);
 });
 
 Route::get('/ping', function () {

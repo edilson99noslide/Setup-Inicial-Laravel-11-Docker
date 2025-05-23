@@ -4,11 +4,13 @@ namespace App\Repositories;
 
 use App\Models\User;
 
-class EloquentUserRepository implements UserRepositoryInterface
-{
+class EloquentUserRepository implements UserRepositoryInterface {
+    public function findById(int $userId): ?User {
+        return User::find($userId);
+    }
 
-    public function findById(int $id): ?User {
-        return User::find($id);
+    public function create(array $data): ?User {
+        return User::create($data);
     }
 
     public function update(User $user, array $data): ?User {
@@ -18,7 +20,7 @@ class EloquentUserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function create(array $data): ?User {
-        return User::create($data);
+    public function delete(int $userId): ?bool {
+        return User::destroy($userId);
     }
 }
