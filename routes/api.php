@@ -19,6 +19,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::prefix('users')->middleware('auth:api')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
     Route::get('/{userId}', [UserController::class, 'show']);
     Route::post('/', [UserController::class, 'store']);
     Route::put('/{userId}', [UserController::class, 'update']);

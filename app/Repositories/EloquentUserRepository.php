@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class EloquentUserRepository implements UserRepositoryInterface {
     public function findById(int $userId): ?User {
@@ -11,6 +12,10 @@ class EloquentUserRepository implements UserRepositoryInterface {
 
     public function findByEmail(string $email): ?User {
         return User::where('email', $email)->first();
+    }
+
+    public function getAll(): Collection {
+        return User::all();
     }
 
     public function create(array $data): ?User {

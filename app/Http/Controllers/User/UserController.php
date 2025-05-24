@@ -9,6 +9,7 @@ use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 
 // Use cases
+use App\UseCases\User\GetAllUsersUseCase;
 use App\UseCases\User\GetUserUseCase;
 use App\UseCases\User\CreateUserUseCase;
 use App\UseCases\User\UpdateUserUseCase;
@@ -19,11 +20,22 @@ use Illuminate\Http\Response;
 
 class UserController extends Controller {
     public function __construct(
+        private GetAllUsersUseCase $getAllUsersUseCase,
+        private GetUserUseCase $getUserUseCase,
         private UpdateUserUseCase $updateUserUseCase,
         private CreateUserUseCase $createUserUseCase,
-        private GetUserUseCase $getUserUseCase,
         private DeleteUserUseCase $deleteUserUseCase,
     ) {}
+
+    public function index() {
+        $users = $this->getAllUsersUseCase->handle();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuários retornados com sucesso.',
+            'data' => $users,
+        ]);
+    }
 
     /**
      * Responsável por retornar um usuário pelo Id
