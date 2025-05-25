@@ -6,12 +6,13 @@ use Illuminate\Support\ServiceProvider;
 
 // Interface
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\TwoFactorRepositoryInterface;
 
 // Repository
 use App\Repositories\EloquentUserRepository;
+use App\Repositories\EloquentTwoFactorRepository;
 
-class AppServiceProvider extends ServiceProvider
-{
+class AppServiceProvider extends ServiceProvider {
     /**
      * Register any application services.
      */
@@ -20,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UserRepositoryInterface::class,
             EloquentUserRepository::class
+        );
+
+        $this->app->bind(
+          TwoFactorRepositoryInterface::class,
+          EloquentTwoFactorRepository::class
         );
     }
 

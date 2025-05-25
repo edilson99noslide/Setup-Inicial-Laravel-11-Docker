@@ -22,6 +22,8 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'google2fa_secret',
+        'two_factor_enabled',
     ];
 
     /**
@@ -42,8 +44,9 @@ class User extends Authenticatable implements JWTSubject
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at'  => 'datetime',
+            'password'           => 'hashed',
+            'two_factor_enabled' => 'boolean',
         ];
     }
 
