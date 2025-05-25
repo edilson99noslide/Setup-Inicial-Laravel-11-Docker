@@ -20,6 +20,7 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth:api')->post('/2fa/enable', [TwoFactorController::class, 'enableTwoFactor']);
     Route::middleware('auth:api')->post('/2fa/disable', [TwoFactorController::class, 'disableTwoFactor']);
     Route::middleware('auth:api')->post('/2fa/validate', [TwoFactorController::class, 'validateTwoFactor']);
+    Route::middleware('auth:api')->post('change-password', [AuthController::class, 'changePassword']);
 });
 
 Route::prefix('users')->middleware('auth:api')->group(function () {

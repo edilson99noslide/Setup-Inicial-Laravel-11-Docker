@@ -32,4 +32,11 @@ class EloquentUserRepository implements UserRepositoryInterface {
     public function delete(int $userId): ?bool {
         return User::destroy($userId);
     }
+
+    public function changePassword(User $user, string $password): ?User {
+        $user->password = bcrypt($password);
+        $user->save();
+
+        return $user;
+    }
 }

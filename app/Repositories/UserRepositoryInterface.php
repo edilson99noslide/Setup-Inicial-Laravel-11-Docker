@@ -12,4 +12,5 @@ interface UserRepositoryInterface {
     public function update(User $user, array $data): ?User;
     public function create(array $data): ?User;
     public function delete(int $userId): ?bool;
+    public function changePassword(User $user, string $password): ?User;
 }

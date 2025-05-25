@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Services\AuthService;
+use App\UseCases\Auth\ChangePasswordUseCase;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller {
     protected AuthService $authService;
 
-    public function __construct(AuthService $authService) {
+    public function __construct(AuthService $authService, ChangePasswordUseCase $changePasswordUseCase) {
         $this->authService = $authService;
+        $this->changePasswordUseCase = $changePasswordUseCase;
     }
 
     /**
@@ -61,6 +64,27 @@ class AuthController extends Controller {
             'access_token' => $newToken,
             'token_type' => 'bearer',
             'expires_in' => Auth::guard('api')->factory()->getTTL() * 60
+        ]);
+    }
+
+    /**
+     * Responsável por alterar a senha do usuário logado
+     *
+     * @param ChangePasswordRequest $request
+     * @return JsonResponse
+     */
+    public function changePassword(ChangePasswordRequest $request): JsonResponse {
+        $passwordChange = $this->changePasswordUseCase->handle($request->validated());
+
+        if(!$passwordChange)
+            return response()->json([
+                'success' => false,
+                'message' => 'Senha incorreta.'
+            ], 422);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Senha alterada com sucesso.'
         ]);
     }
 }
