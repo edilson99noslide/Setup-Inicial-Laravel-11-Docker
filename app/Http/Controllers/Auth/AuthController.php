@@ -27,6 +27,12 @@ class AuthController extends Controller {
     public function login(LoginRequest $request) {
         $token = $this->authService->authenticate($request->validated());
 
+        if($token === 'unauthorized')
+            return response()->json([
+                'success' => false,
+                'message' => 'Login ou senha incorretos.'
+            ], 401);
+
         return response()->json(
             $this->authService->tokenResponse($token)
         );
