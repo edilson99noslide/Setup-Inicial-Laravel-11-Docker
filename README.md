@@ -24,14 +24,18 @@ Este projeto é um setup base para aplicações Laravel 11 com funcionalidades c
 
 ## 🔐 Rotas de Autenticação
 
-| Método | Rota                     | Descrição                          | Middleware     |
-|--------|--------------------------|------------------------------------|----------------|
-| POST   | `/api/auth/register`     | Cadastra um novo usuário           | -              |
-| POST   | `/api/auth/login`        | Realiza login e retorna tokens     | -              |
-| POST   | `/api/auth/logout`       | Realiza logout                     | auth:api       |
-| POST   | `/api/auth/refresh`      | Gera novo token                    | auth:api       |
-| POST   | `/api/forgot-password`   | Envia email com token de reset     | -              |
-| POST   | `/api/reset-password`    | Redefine senha com token enviado   | -              |
+| Método | Rota                        | Descrição                        | Middleware     |
+|--------|-----------------------------|----------------------------------|----------------|
+| POST   | `/api/auth/register`        | Cadastra um novo usuário         | -              |
+| POST   | `/api/auth/login`           | Realiza login e retorna tokens   | -              |
+| POST   | `/api/auth/logout`          | Realiza logout                   | auth:api       |
+| POST   | `/api/auth/refresh`         | Gera novo token                  | auth:api       |
+| POST   | `/api/auth/forgot-password` | Envia email com token de reset   | -              |
+| POST   | `/api/auth/reset-password`  | Redefine senha com token enviado | -              |
+| POST   | `/api/auth/change-password` | Alterar senha do usuário logado  | auth:api              |
+| POST   | `/api/auth/2fa/enabled`     | Ativar 2FA                       | auth:api              |
+| POST   | `/api/auth/2fa/disabled`    | Desativar 2FA                    | auth:api              |
+| POST   | `/api/auth/2fa/validate`    | Validar 2FA                      | auth:api              |
 
 ## 👥 Rotas de Usuários
 
