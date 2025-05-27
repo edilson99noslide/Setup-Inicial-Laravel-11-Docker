@@ -40,6 +40,12 @@ class TwoFactorController extends Controller {
 
     public function validateTwoFactor(ValidateTwoFactorRequest $request): JsonResponse {
         $user = Auth::user();
+        if(!$user->two_factor_enabled)
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuário não possui autenticação de dois fatores.',
+            ]);
+
         $isValid = $this->validateTwoFactorUseCase->handle($user, $request->get('2fa_code'));
 
         return response()->json([

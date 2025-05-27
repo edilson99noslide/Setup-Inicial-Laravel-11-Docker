@@ -24,7 +24,7 @@ class ResetPasswordController extends Controller {
 
         return response()->json([
             'success' => true,
-            'message' => 'Sua senha foi enviada com sucesso.'
+            'message' => 'Sua senha foi alterada com sucesso.'
         ]);
     }
 }

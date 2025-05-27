@@ -11,8 +11,6 @@ class AuthService {
      *
      * @param array $credentials
      * @return string
-     *
-     * @throw UnauthorizedHttpException se credenciais inválidas
      */
     public function authenticate(array $credentials): string {
         if(!$token = Auth::guard('api')->attempt($credentials)) {

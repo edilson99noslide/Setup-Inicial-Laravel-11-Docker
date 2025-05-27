@@ -8,19 +8,32 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\TwoFactorController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register', [RegisterController::class, 'register']);
 
 Route::prefix('auth')->group(function () {
+    // Registro
+    Route::post('/register', [RegisterController::class, 'register']);
+
+    // Login
     Route::post('/login', [AuthController::class, 'login']);
-    Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
-    Route::middleware('auth:api')->post('/refresh', [AuthController::class, 'refresh']);
-    Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
+
+    // Recuperação de senha
     Route::post('/forgot-password', ForgotPasswordController::class)->name('password.email');
     Route::post('/reset-password', ResetPasswordController::class)->name('password.reset');
-    Route::middleware('auth:api')->post('/2fa/enable', [TwoFactorController::class, 'enableTwoFactor']);
-    Route::middleware('auth:api')->post('/2fa/disable', [TwoFactorController::class, 'disableTwoFactor']);
-    Route::middleware('auth:api')->post('/2fa/validate', [TwoFactorController::class, 'validateTwoFactor']);
-    Route::middleware('auth:api')->post('change-password', [AuthController::class, 'changePassword']);
+
+    // Usuário logado
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
+        Route::get('/me', [AuthController::class, 'me']);
+        Route::post('/change-password', [AuthController::class, 'changePassword']);
+    });
+
+    // 2FA
+    Route::prefix('/2fa')->middleware('auth:api')->group(function () {
+        Route::post('/enable', [TwoFactorController::class, 'enableTwoFactor']);
+        Route::post('/disable', [TwoFactorController::class, 'disableTwoFactor']);
+        Route::post('/validate', [TwoFactorController::class, 'validateTwoFactor']);
+    });
 });
 
 Route::prefix('users')->middleware('auth:api')->group(function () {
@@ -31,6 +44,10 @@ Route::prefix('users')->middleware('auth:api')->group(function () {
     Route::delete('/{userId}', [UserController::class, 'destroy']);
 });
 
+// Rota de teste básica
 Route::get('/ping', function () {
-    return response()->json(['message' => 'pong']);
+    return response()->json([
+        'success' => true,
+        'message' => 'pong'
+    ]);
 });
